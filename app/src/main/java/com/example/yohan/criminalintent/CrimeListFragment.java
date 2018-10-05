@@ -1,5 +1,6 @@
 package com.example.yohan.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -16,6 +19,7 @@ public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private Button button;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
         return view;
+
     }
 
     private void updateUI() {
@@ -33,7 +38,9 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView.setAdapter(mAdapter);
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder {
+    private class CrimeHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
+        
         private Crime mCrime;
         private TextView mTitleTextView;
         private TextView mDateTextView;
@@ -49,13 +56,22 @@ public class CrimeListFragment extends Fragment {
                     itemView.findViewById(R.id.list_item_crime_solved_check_box);
         }
 
+        @Override
+        public void onClick (View view){
+            Intent intent = new Intent(getActivity(), CrimeActivity.class);
+            startActivity(intent);
+        }
+
         public void bindCrime(Crime crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
             mSolvedCheckBox.setChecked(mCrime.isSolved());
         }
+
+
     }
+
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
         private List<Crime> mCrimes;
